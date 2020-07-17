@@ -6,6 +6,7 @@ import { AiFillHeart } from 'react-icons/ai';
 import { RiCoupon2Line } from 'react-icons/ri';
 import { MdRemoveShoppingCart } from 'react-icons/md';
 import { RootState } from 'reducers';
+import { ICartItem } from 'src/models/ICartItem';
 import {
     ProductPriceProps,
     ProductItemProps,
@@ -115,7 +116,7 @@ const ProductButton = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 140px;
+    width: 120px;
     height: 30px;
     background: #000000;
     color: #ffffff;
@@ -154,13 +155,14 @@ function ProductItem({
     availableCoupon = true,
     isInCart = false,
 }: ProductItemProps): React.ReactElement {
-    const item = {
+    const item: ICartItem = {
         id,
         title,
         coverImage,
         price,
         score,
         availableCoupon,
+        amount: 0,
     };
     const { cartItemCounts } = useSelector((state: RootState) => state.cart);
     const dispatch = useDispatch();
@@ -207,14 +209,14 @@ function ProductItem({
                         {isInCart ? (
                             <>
                                 <RemoveCartIcon />
-                                Remove From Cart
+                                카트에서 빼기
                             </>
                         ) : (
                             <>
                                 <AddCartIcon />
                                 {cartItemCounts >= 3
-                                    ? 'Cart is full'
-                                    : 'Add To Cart'}
+                                    ? '카드가 가득참'
+                                    : '카드에 담기'}
                             </>
                         )}
                     </ProductButton>
