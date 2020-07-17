@@ -22,7 +22,7 @@ const ProductListContainer = styled.ul`
     flex-wrap: wrap;
     justify-content: space-around;
     align-content: space-around;
-    padding-top: 20px;
+    padding: 30px;
     text-align: center;
 `;
 
