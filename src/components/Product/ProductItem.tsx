@@ -31,14 +31,14 @@ const ProductItemContainer = styled.li`
 
 const ProductImageContainer = styled.div`
     width: 100%;
-    height: 250px;
+    height: 240px;
     border-radius: 10px;
     overflow: hidden;
 `;
 
 const ProductImage = styled.img`
     width: 100%;
-    height: 250px;
+    height: 240px;
     object-fit: cover;
     transition: transform 0.4s ease;
 `;

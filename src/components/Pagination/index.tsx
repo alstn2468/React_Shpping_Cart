@@ -8,13 +8,12 @@ import {
 } from 'components/Pagination/PaginationProps';
 
 const PaginationContainer = styled.div`
-    position: absolute;
-    bottom: 5%;
     width: 100%;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 20px 0 30px 0;
 `;
 
 const PaginationButton = styled.button<PaginationButtonProps>`
