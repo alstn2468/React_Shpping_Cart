@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { RootState } from 'reducers';
 import logoImage from 'assets/images/logo.png';
 import { ItemProps } from 'components/Header/HeaderType';
 
@@ -37,6 +39,7 @@ const SLink = styled(Link)`
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 
     &:hover {
         font-weight: 600;
@@ -59,6 +62,8 @@ const LogoImage = styled.img`
 function Header({
     location: { pathname },
 }: RouteComponentProps): React.ReactElement {
+    const { cartItemCounts } = useSelector((state: RootState) => state.cart);
+
     return (
         <HeaderContainer>
             <LogoImageContainer>
@@ -72,7 +77,7 @@ function Header({
                     <SLink to="/products">PRODUCTS</SLink>
                 </Item>
                 <Item current={pathname === '/cart'}>
-                    <SLink to="/cart">CART</SLink>
+                    <SLink to="/cart">CART ({cartItemCounts})</SLink>
                 </Item>
             </List>
         </HeaderContainer>
