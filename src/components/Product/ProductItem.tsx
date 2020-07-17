@@ -1,10 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { FaCartPlus } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
 import { RiCoupon2Line } from 'react-icons/ri';
-import { ProductItem } from 'models/ProductItem';
-import { ProductPriceProps } from 'components/Product/ProductProps';
+import { MdRemoveShoppingCart } from 'react-icons/md';
+import {
+    ProductPriceProps,
+    ProductItemProps,
+} from 'components/Product/ProductProps';
+import { addProductToCart, removeProductFromCart } from 'actions/cartAction';
 
 const ProductItemContainer = styled.li`
     display: inline-flex;
@@ -118,7 +123,14 @@ const ProductOverlayContainer = styled.div`
     border-radius: 10px;
 `;
 
-const ProductOverlayIcon = styled(FaCartPlus)`
+const AddCartIcon = styled(FaCartPlus)`
+    width: 3rem;
+    height: 3rem;
+    fill: rgba(255, 255, 255, 0.9);
+    margin-bottom: 6px;
+`;
+
+const RemoveCartIcon = styled(MdRemoveShoppingCart)`
     width: 3rem;
     height: 3rem;
     fill: rgba(255, 255, 255, 0.9);
@@ -138,7 +150,10 @@ function ProductItem({
     price,
     score,
     availableCoupon = true,
-}: ProductItem): React.ReactElement {
+    isInCart = false,
+}: ProductItemProps): React.ReactElement {
+    const dispatch = useDispatch();
+
     return (
         <ProductItemContainer>
             <ProductImageContainer>
@@ -168,10 +183,19 @@ function ProductItem({
                     )}
                 </ProductPriceContainer>
             </ProductDetailContainer>
-            <ProductOverlayContainer className="product-overlay">
-                <ProductOverlayIcon />
+            <ProductOverlayContainer
+                className="product-overlay"
+                onClick={
+                    isInCart
+                        ? () => console.log('At cart')
+                        : () => console.log('No cart')
+                }
+            >
+                {isInCart ? <RemoveCartIcon /> : <AddCartIcon />}
                 <ProductOverlayText>
-                    클릭 시 장바구니에 추가됩니다.
+                    {isInCart
+                        ? '클릭 시 장바구니에서 삭제됩니다.'
+                        : '클릭 시 장바구니에 추가됩니다.'}
                 </ProductOverlayText>
             </ProductOverlayContainer>
         </ProductItemContainer>

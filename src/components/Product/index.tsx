@@ -31,6 +31,7 @@ function Product(): React.ReactElement {
     const { loading, productItems, currentPage, itemCounts } = useSelector(
         (state: RootState) => state.product,
     );
+    const { cartItems } = useSelector((state: RootState) => state.cart);
 
     React.useEffect(() => {
         dispatch(getProductList(currentPage));
@@ -41,7 +42,13 @@ function Product(): React.ReactElement {
             <Helemt title="PRODUCT" />
             <ProductListContainer>
                 {productItems.map((item) => (
-                    <ProductItem key={item.id} {...item} />
+                    <ProductItem
+                        key={item.id}
+                        isInCart={cartItems.some(
+                            (cartItem) => cartItem.id === item.id,
+                        )}
+                        {...item}
+                    />
                 ))}
                 <Pagination
                     currentPage={currentPage}
