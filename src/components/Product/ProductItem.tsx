@@ -5,6 +5,7 @@ import { FaCartPlus } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
 import { RiCoupon2Line } from 'react-icons/ri';
 import { MdRemoveShoppingCart } from 'react-icons/md';
+import { RootState } from 'reducers';
 import {
     ProductPriceProps,
     ProductItemProps,
