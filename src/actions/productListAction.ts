@@ -1,5 +1,5 @@
 import { deprecated, createAsyncAction, ActionType } from 'typesafe-actions';
-import { ProductItem } from 'models/ProductItem';
+import { IProductItem } from 'src/models/IProductItem';
 
 export const FETCH_PRODUCT_LIST_REQUEST = 'FETCH_PRODUCT_LIST_REQUEST';
 export const FETCH_PRODUCT_LIST_SUCCESS = 'FETCH_PRODUCT_LIST_SUCCESS';
@@ -8,7 +8,7 @@ export const CHANGE_PRODUCT_LIST_CURRENT_PAGE =
     'CHANGE_PRODUCT_LIST_CURRENT_PAGE';
 
 type AsyncActionPayload = {
-    productItems: ProductItem[];
+    productItems: IProductItem[];
     itemCounts: number;
 };
 

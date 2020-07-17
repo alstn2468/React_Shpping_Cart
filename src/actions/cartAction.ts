@@ -1,5 +1,5 @@
 import { deprecated, ActionType } from 'typesafe-actions';
-import { ProductItem } from 'models/ProductItem';
+import { IProductItem } from 'src/models/IProductItem';
 
 export const ADD_PRODUCT_TO_CART = 'ADD_PRODUCT_TO_CART';
 export const REMOVE_PRODUCT_FROM_CART = 'REMOVE_PRODUCT_FROM_CART';
@@ -15,7 +15,7 @@ const { createStandardAction } = deprecated;
  * TPayload : 상품 객체        *
  * =========================== */
 export const addProductToCart = createStandardAction(ADD_PRODUCT_TO_CART)<
-    ProductItem
+    IProductItem
 >();
 
 /* ============================= *
@@ -24,7 +24,7 @@ export const addProductToCart = createStandardAction(ADD_PRODUCT_TO_CART)<
  * ============================= */
 export const removeProductFromCart = createStandardAction(
     REMOVE_PRODUCT_FROM_CART,
-)<ProductItem>();
+)<IProductItem>();
 
 /* ============================= *
  * 카트에서 상품을 제거하는 액션 *
@@ -39,7 +39,7 @@ export const removeAllProductFromCart = createStandardAction(
  * TPayload : 상품 객체                       *
  * ========================================== */
 export const selectProductAtCart = createStandardAction(SELECT_PRODUCT_AT_CART)<
-    ProductItem
+    IProductItem
 >();
 
 /* =============================================== *

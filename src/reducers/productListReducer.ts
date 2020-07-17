@@ -6,12 +6,12 @@ import {
     ProductListAction,
 } from 'actions/productListAction';
 import { createReducer } from 'typesafe-actions';
-import { ProductItem } from 'models/ProductItem';
+import { IProductItem } from 'src/models/IProductItem';
 
 export type ProductListState = {
     loading: boolean;
     currentPage: number;
-    productItems: ProductItem[];
+    productItems: IProductItem[];
     itemCounts: number;
     error?: string;
 };
