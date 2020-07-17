@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaCartPlus } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
 import { RiCoupon2Line } from 'react-icons/ri';
@@ -23,10 +23,6 @@ const ProductItemContainer = styled.li`
     position: relative;
 
     &:hover {
-        .product-overlay {
-            opacity: 1;
-        }
-
         .product-image {
             transform: scale(1.1);
         }
@@ -77,6 +73,13 @@ const ProductScoreText = styled.span`
     color: rgb(133, 138, 141);
 `;
 
+const ProductBottomContainer = styled.div`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 const ProductPriceContainer = styled.div`
     display: flex;
     align-items: center;
@@ -107,40 +110,38 @@ const Divisor = styled.hr`
     border: 1px solid rgb(242, 244, 245);
 `;
 
-const ProductOverlayContainer = styled.div`
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
+const ProductButton = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    border-radius: 10px;
+    width: auto;
+    height: 30px;
+    background: #000000;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 0 8px;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 const AddCartIcon = styled(FaCartPlus)`
-    width: 3rem;
-    height: 3rem;
-    fill: rgba(255, 255, 255, 0.9);
-    margin-bottom: 6px;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    fill: #ffffff;
+    margin-right: 4px;
 `;
 
 const RemoveCartIcon = styled(MdRemoveShoppingCart)`
-    width: 3rem;
-    height: 3rem;
-    fill: rgba(255, 255, 255, 0.9);
-    margin-bottom: 6px;
-`;
-
-const ProductOverlayText = styled.div`
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 20px;
-    font-weight: bold;
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    fill: #ffffff;
+    margin-right: 4px;
 `;
 
 function ProductItem({
@@ -152,6 +153,15 @@ function ProductItem({
     availableCoupon = true,
     isInCart = false,
 }: ProductItemProps): React.ReactElement {
+    const item = {
+        id,
+        title,
+        coverImage,
+        price,
+        score,
+        availableCoupon,
+    };
+    const { cartItemCounts } = useSelector((state: RootState) => state.cart);
     const dispatch = useDispatch();
 
     return (
@@ -166,38 +176,49 @@ function ProductItem({
                     <ProductScoreText>{score}</ProductScoreText>
                 </ProductScore>
                 <Divisor />
-                <ProductPriceContainer>
-                    <ProductPrice
-                        availableCoupon={availableCoupon}
-                        color="rgb(27, 28, 29)"
+                <ProductBottomContainer>
+                    <ProductPriceContainer>
+                        <ProductPrice
+                            availableCoupon={availableCoupon}
+                            color="rgb(27, 28, 29)"
+                        >
+                            {price}원
+                        </ProductPrice>
+                        {availableCoupon && (
+                            <>
+                                <CouponIcon />
+                                <ProductPrice
+                                    availableCoupon={false}
+                                    color="red"
+                                >
+                                    쿠폰 적용 가능
+                                </ProductPrice>
+                            </>
+                        )}
+                    </ProductPriceContainer>
+                    <ProductButton
+                        onClick={
+                            isInCart
+                                ? () => dispatch(removeProductFromCart(item))
+                                : () => dispatch(addProductToCart(item))
+                        }
                     >
-                        {price}원
-                    </ProductPrice>
-                    {availableCoupon && (
-                        <>
-                            <CouponIcon />
-                            <ProductPrice availableCoupon={false} color="red">
-                                쿠폰 적용 가능
-                            </ProductPrice>
-                        </>
-                    )}
-                </ProductPriceContainer>
+                        {isInCart ? (
+                            <>
+                                <RemoveCartIcon />
+                                Remove From Cart
+                            </>
+                        ) : (
+                            <>
+                                <AddCartIcon />
+                                {cartItemCounts >= 3
+                                    ? 'Cart is full'
+                                    : 'Add To Cart'}
+                            </>
+                        )}
+                    </ProductButton>
+                </ProductBottomContainer>
             </ProductDetailContainer>
-            <ProductOverlayContainer
-                className="product-overlay"
-                onClick={
-                    isInCart
-                        ? () => console.log('At cart')
-                        : () => console.log('No cart')
-                }
-            >
-                {isInCart ? <RemoveCartIcon /> : <AddCartIcon />}
-                <ProductOverlayText>
-                    {isInCart
-                        ? '클릭 시 장바구니에서 삭제됩니다.'
-                        : '클릭 시 장바구니에 추가됩니다.'}
-                </ProductOverlayText>
-            </ProductOverlayContainer>
         </ProductItemContainer>
     );
 }
