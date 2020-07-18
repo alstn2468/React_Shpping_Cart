@@ -29,6 +29,7 @@ const PaginationButton = styled.button<PaginationButtonProps>`
     border-radius: 50%;
     font-size: 12px;
     font-weight: bold;
+    cursor: pointer;
 
     &:focus {
         outline: none;

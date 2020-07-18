@@ -140,7 +140,6 @@ const cartReducer = createReducer<CartState, CartAction>(initialState, {
             ...state.cartItems.find(
                 (cartItem) => cartItem.id === action.payload.productId,
             ),
-            isSelected: true,
             coupon: action.payload.coupon,
         };
 
@@ -150,11 +149,14 @@ const cartReducer = createReducer<CartState, CartAction>(initialState, {
                 if (cartItem.id === action.payload.productId) {
                     return {
                         ...product,
+                        isSelected: true,
                     };
                 }
                 return { ...cartItem };
             }),
-            price: state.price + product.price * product.amount,
+            price:
+                state.price +
+                (!product.isSelected ? product.price * product.amount : 0),
             discountPrice:
                 state.discountPrice +
                 applyCoupon(
