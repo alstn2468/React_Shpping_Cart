@@ -16,7 +16,6 @@ function Helmet({ title, description }: HelmetProps): React.ReactElement {
                 content={description ? description : baseDescription}
             />
             <link rel="shortcut icon" href={Favicon} />
-
             <meta
                 property="og:title"
                 content={`클래스101 | ${title ? title : baseTitle}`}
@@ -29,7 +28,11 @@ function Helmet({ title, description }: HelmetProps): React.ReactElement {
                 property="og:image"
                 content="https://alstn2468.github.io/React_Shopping_Cart_Frontend/images/meta-image.jpg"
             />
-
+            <meta
+                property="og:url"
+                content="https://alstn2468.github.io/React_Shopping_Cart_Frontend/"
+            />
+            <meta property="og:type" content="website" />
             <meta
                 name="twitter:title"
                 content={`클래스101 | ${title ? title : baseTitle}`}
