@@ -20,7 +20,7 @@ const CartListContainer = styled.div`
 `;
 
 function Cart() {
-    const { cartItemCounts, cartItems, selectedItems, price } = useSelector(
+    const { cartItemCounts, cartItems, price } = useSelector(
         (state: RootState) => state.cart,
     );
 

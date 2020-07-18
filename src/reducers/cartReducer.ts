@@ -72,7 +72,7 @@ const cartReducer = createReducer<CartState, CartAction>(initialState, {
         return {
             ...state,
             cartItems: state.cartItems.map((cartItem) => {
-                if (cartItem.id === action.payload) {
+                if (cartItem.id === action.payload && cartItem.amount > 1) {
                     return {
                         ...cartItem,
                         amount: cartItem.amount - 1,

@@ -7,7 +7,11 @@ import {
     ProductTopInfoTextProp,
 } from 'components/Cart/CartItemProps';
 import { ICartItem } from 'models/ICartItem';
-import { removeProductFromCart } from 'actions/cartAction';
+import {
+    removeProductFromCart,
+    increaseCartProductAmount,
+    decreaseCartProductAmount,
+} from 'actions/cartAction';
 
 const CartItemContainer = styled.div`
     position: relative;
@@ -99,6 +103,70 @@ const Divisor = styled.hr`
     border: 1px solid rgb(242, 244, 245);
 `;
 
+const ProductPriceContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(27, 28, 29);
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+`;
+
+const ProductPriceText = styled.div`
+    color: rgb(27, 28, 29);
+`;
+
+const ProductAmountContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ProductAmountButton = styled.button`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    transition: all 0.5s ease;
+    border-radius: 3px;
+
+    &:active {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const ProductAmountText = styled.div`
+    margin: 0 6px;
+    width: 10px;
+    text-align: center;
+`;
+
+const ConfirmationContainer = styled.div``;
+
+const ApplyCouponButton = styled.button`
+    height: 40px;
+    width: 120px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 0;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+
+    &:focus {
+        outline: none;
+    }
+`;
+
 function CartItem({
     id,
     title,
@@ -107,6 +175,7 @@ function CartItem({
     score,
     availableCoupon = true,
     amount,
+    isSelected = false,
 }: ICartItem) {
     const item = {
         id,
@@ -116,6 +185,7 @@ function CartItem({
         score,
         availableCoupon,
         amount,
+        isSelected,
     };
     const dispatch = useDispatch();
 
@@ -143,12 +213,36 @@ function CartItem({
             <CartItemImage src={coverImage} />
             <CartItemDetail>
                 <ProductTitle>{title}</ProductTitle>
-                <Divisor />
-                <div>
-                    {price} * {amount} = {price * amount}
-                </div>
-                <div>{amount}</div>
+                <ProductPriceContainer>
+                    <ProductPriceText>{price}원</ProductPriceText>
+                    <ProductAmountContainer>
+                        <ProductAmountButton
+                            disabled={amount <= 1}
+                            onClick={() =>
+                                dispatch(decreaseCartProductAmount(id))
+                            }
+                        >
+                            -
+                        </ProductAmountButton>
+
+                        <ProductAmountText>{amount}</ProductAmountText>
+                        <ProductAmountButton
+                            onClick={() =>
+                                dispatch(increaseCartProductAmount(id))
+                            }
+                        >
+                            +
+                        </ProductAmountButton>
+                    </ProductAmountContainer>
+                </ProductPriceContainer>
             </CartItemDetail>
+            <Divisor />
+            <ConfirmationContainer>
+                <ApplyCouponButton>
+                    {availableCoupon ? '쿠폰 적용하기' : '쿠폰을 적용 불가'}
+                </ApplyCouponButton>
+                총 {price * amount} 원
+            </ConfirmationContainer>
         </CartItemContainer>
     );
 }
