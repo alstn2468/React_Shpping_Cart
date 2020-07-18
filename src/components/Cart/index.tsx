@@ -120,7 +120,17 @@ function Cart() {
                                 {numberWithComma(price - discountPrice)}원
                             </PurchaseText>
                         </PurchaseTextContainer>
-                        <PurchaseButton>구매하기</PurchaseButton>
+                        <PurchaseButton
+                            onClick={() =>
+                                alert(
+                                    `총 금액 ${numberWithComma(
+                                        price - discountPrice,
+                                    )} 원 구매 완료`,
+                                )
+                            }
+                        >
+                            구매하기
+                        </PurchaseButton>
                     </PurchaseContainer>
                 </>
             ) : (
