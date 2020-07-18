@@ -163,6 +163,7 @@ function ProductItem({
         score,
         availableCoupon,
         amount: 1,
+        isSelected: false,
     };
     const { cartItemCounts } = useSelector((state: RootState) => state.cart);
     const dispatch = useDispatch();
