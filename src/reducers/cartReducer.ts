@@ -4,15 +4,19 @@ import {
     INCREASE_CART_PRODUCT_AMOUNT,
     DECREASE_CART_PRODUCT_AMOUNT,
     SELECT_PRODUCT_AT_CART,
+    ADD_COUPON_AT_PRODUCT,
+    REMOVE_COUPON_FROM_PRODUCT,
     CartAction,
 } from 'actions/cartAction';
 import { createReducer } from 'typesafe-actions';
 import { ICartItem } from 'src/models/ICartItem';
+import { applyCoupon } from 'utils/applyCoupon';
 
 export type CartState = {
     cartItemCounts: number;
     cartItems: ICartItem[];
     price: number;
+    discountPrice: number;
     error?: string;
 };
 
@@ -20,6 +24,7 @@ const initialState: CartState = {
     cartItemCounts: 0,
     cartItems: [],
     price: 0,
+    discountPrice: 0,
     error: null,
 };
 
@@ -102,6 +107,40 @@ const cartReducer = createReducer<CartState, CartAction>(initialState, {
                 (product.isSelected
                     ? -(product.price * product.amount)
                     : product.price * product.amount),
+        };
+    },
+    [ADD_COUPON_AT_PRODUCT]: (state, action) => {
+        const product = state.cartItems.find(
+            (cartItem) => cartItem.id === action.payload.productId,
+        );
+        console.log(
+            applyCoupon(product.price, product.amount, action.payload.coupon),
+        );
+
+        return {
+            ...state,
+            discountPrice:
+                state.discountPrice +
+                applyCoupon(
+                    product.price,
+                    product.amount,
+                    action.payload.coupon,
+                ),
+        };
+    },
+    [REMOVE_COUPON_FROM_PRODUCT]: (state, action) => {
+        const product = state.cartItems.find(
+            (cartItem) => cartItem.id === action.payload.productId,
+        );
+        return {
+            ...state,
+            discountPrice:
+                state.discountPrice -
+                applyCoupon(
+                    product.price,
+                    product.amount,
+                    action.payload.coupon,
+                ),
         };
     },
 });

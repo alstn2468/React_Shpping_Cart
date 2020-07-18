@@ -15,6 +15,7 @@ import {
     decreaseCartProductAmount,
     selectProductAtCart,
 } from 'actions/cartAction';
+import { openCouponModalDialog } from 'actions/couponAction';
 import { numberWithComma } from 'utils/numberWithComma';
 
 const CartItemContainer = styled.div`
@@ -311,6 +312,7 @@ function CartItem({
                 <ApplyCouponButton
                     disabled={!availableCoupon}
                     availableCoupon={availableCoupon}
+                    onClick={() => dispatch(openCouponModalDialog())}
                 >
                     {availableCoupon ? '쿠폰 적용하기' : '쿠폰 적용 불가'}
                 </ApplyCouponButton>

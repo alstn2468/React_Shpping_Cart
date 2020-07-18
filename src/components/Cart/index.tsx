@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { RootState } from 'reducers';
 import CartItem from 'components/Cart/CartItem';
+import CouponDialog from 'components/CouponDialog';
 import { ICartItem } from 'models/ICartItem';
 import { numberWithComma } from 'utils/numberWithComma';
 
@@ -87,7 +88,9 @@ const PurchaseButton = styled.button`
 `;
 
 function Cart() {
-    const { cartItems, price } = useSelector((state: RootState) => state.cart);
+    const { cartItems, price, discountPrice } = useSelector(
+        (state: RootState) => state.cart,
+    );
 
     return (
         <CartListContainer>
@@ -108,13 +111,13 @@ function Cart() {
                         <PurchaseTextContainer>
                             <PurchaseTextLabel>할인 금액</PurchaseTextLabel>
                             <PurchaseText>
-                                {numberWithComma(price)}원
+                                {numberWithComma(discountPrice)}원
                             </PurchaseText>
                         </PurchaseTextContainer>
                         <PurchaseTextContainer>
                             <PurchaseTextLabel>총 금액</PurchaseTextLabel>
                             <PurchaseText>
-                                {numberWithComma(price)}원
+                                {numberWithComma(price - discountPrice)}원
                             </PurchaseText>
                         </PurchaseTextContainer>
                         <PurchaseButton>구매하기</PurchaseButton>
@@ -126,6 +129,7 @@ function Cart() {
                     장바구니가 비어있습니다.
                 </CartEmptyContainer>
             )}
+            <CouponDialog />
         </CartListContainer>
     );
 }
