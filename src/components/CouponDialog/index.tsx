@@ -102,12 +102,15 @@ const LoadingText = styled.div`
 
 function CouponDialog(): React.ReactElement {
     const dispatch = useDispatch();
+    const { cartItems } = useSelector((state: RootState) => state.cart);
     const { loading, isOpen, coupons, error } = useSelector(
         (state: RootState) => state.coupon,
     );
 
     React.useEffect(() => {
-        dispatch(getCouponList());
+        if (isOpen) {
+            dispatch(getCouponList(cartItems));
+        }
     }, [isOpen]);
 
     return (

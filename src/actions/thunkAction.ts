@@ -6,6 +6,7 @@ import { CouponAction, fetchCouponList } from 'actions/couponAction';
 import { CouponState } from 'reducers/couponReducer';
 import { ProductListState } from 'reducers/productListReducer';
 import { ICouponItem } from 'models/ICouponItem';
+import { ICartItem } from 'models/ICartItem';
 
 export function getProductList(
     page: number,
@@ -33,12 +34,9 @@ export function getProductList(
     };
 }
 
-export function getCouponList(): ThunkAction<
-    Promise<void>,
-    CouponState,
-    null,
-    CouponAction
-> {
+export function getCouponList(
+    cartItems: ICartItem[],
+): ThunkAction<Promise<void>, CouponState, null, CouponAction> {
     return async (dispatch) => {
         const { request, success, failure } = fetchCouponList;
 
@@ -46,8 +44,16 @@ export function getCouponList(): ThunkAction<
 
         try {
             await new Promise((resolve) => setTimeout(resolve, 1000));
+            const usedCouponTitles = cartItems
+                .map((cartItem) => cartItem.coupon)
+                .filter(Boolean)
+                .map((filteredItem) => filteredItem.title);
 
-            const couponList: ICouponItem[] = [...coupons];
+            const couponList: ICouponItem[] = [
+                ...coupons.filter(
+                    (coupon) => !usedCouponTitles.includes(coupon.title),
+                ),
+            ];
 
             dispatch(success({ coupons: couponList }));
         } catch (e) {
