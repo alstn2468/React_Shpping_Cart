@@ -5,7 +5,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { RootState } from 'reducers';
 import CouponItem from 'components/CouponDialog/CouponItem';
 import { closeCouponModalDialog } from 'actions/couponAction';
-import { ICartItem } from 'models/ICartItem';
+import { getCouponList } from 'actions/thunkAction';
 import { ICouponItem } from 'models/ICouponItem';
 
 const OverlayDialogContainer = styled.div`
@@ -105,6 +105,10 @@ function CouponDialog(): React.ReactElement {
     const { loading, isOpen, coupons, error } = useSelector(
         (state: RootState) => state.coupon,
     );
+
+    React.useEffect(() => {
+        dispatch(getCouponList());
+    }, [isOpen]);
 
     return (
         isOpen && (

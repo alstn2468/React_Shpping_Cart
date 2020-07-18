@@ -9,7 +9,7 @@ import {
     CartAction,
 } from 'actions/cartAction';
 import { createReducer } from 'typesafe-actions';
-import { ICartItem } from 'src/models/ICartItem';
+import { ICartItem } from 'models/ICartItem';
 import { applyCoupon } from 'utils/applyCoupon';
 
 export type CartState = {
@@ -41,84 +41,120 @@ const cartReducer = createReducer<CartState, CartAction>(initialState, {
         };
     },
     [REMOVE_PRODUCT_FROM_CART]: (state, action) => {
+        const product = action.payload;
         return {
             ...state,
             cartItems: [
-                ...state.cartItems.filter(
-                    (item) => item.id !== action.payload.id,
-                ),
+                ...state.cartItems.filter((item) => item.id !== product.id),
             ],
             cartItemCounts: state.cartItemCounts - 1,
+            price: state.price - product.price * product.amount,
+            discountPrice:
+                state.discountPrice -
+                (product.coupon
+                    ? applyCoupon(product.price, product.amount, product.coupon)
+                    : 0),
         };
     },
     [INCREASE_CART_PRODUCT_AMOUNT]: (state, action) => {
-        let productPrice = 0;
-        return {
-            ...state,
-            cartItems: state.cartItems.map((cartItem) => {
-                if (cartItem.id === action.payload) {
-                    productPrice = cartItem.price;
-                    return {
-                        ...cartItem,
-                        amount: cartItem.amount + 1,
-                    };
-                }
+        let product: ICartItem;
+        const newCartItems = state.cartItems.map((cartItem) => {
+            if (cartItem.id === action.payload) {
+                product = cartItem;
                 return {
                     ...cartItem,
+                    amount: cartItem.amount + 1,
                 };
-            }),
-            price: state.price + productPrice,
+            }
+            return {
+                ...cartItem,
+            };
+        });
+
+        return {
+            ...state,
+            cartItems: newCartItems,
+            price: state.price + (product.isSelected ? product.price : 0),
+            discountPrice:
+                state.discountPrice +
+                (product.coupon && product.isSelected
+                    ? applyCoupon(product.price, 1, product.coupon)
+                    : 0),
         };
     },
     [DECREASE_CART_PRODUCT_AMOUNT]: (state, action) => {
-        let productPrice = 0;
-        return {
-            ...state,
-            cartItems: state.cartItems.map((cartItem) => {
-                if (cartItem.id === action.payload && cartItem.amount > 1) {
-                    productPrice = cartItem.price;
-                    return {
-                        ...cartItem,
-                        amount: cartItem.amount - 1,
-                    };
-                }
+        let product: ICartItem;
+        const newCartItems = state.cartItems.map((cartItem) => {
+            if (cartItem.id === action.payload) {
+                product = cartItem;
                 return {
                     ...cartItem,
+                    amount: cartItem.amount - 1,
                 };
-            }),
-            price: state.price - productPrice,
+            }
+            return {
+                ...cartItem,
+            };
+        });
+
+        return {
+            ...state,
+            cartItems: newCartItems,
+            price: state.price - (product.isSelected ? product.price : 0),
+            discountPrice:
+                state.discountPrice -
+                (product.coupon && product.isSelected
+                    ? applyCoupon(product.price, 1, product.coupon)
+                    : 0),
         };
     },
     [SELECT_PRODUCT_AT_CART]: (state, action) => {
         const product = state.cartItems.find(
             (cartItem) => cartItem.id === action.payload,
         );
+        const newCartItems = state.cartItems.map((cartItem) => {
+            if (cartItem.id === action.payload) {
+                return { ...cartItem, isSelected: !cartItem.isSelected };
+            }
+            return { ...cartItem };
+        });
+        const newDiscountPrice = product.coupon
+            ? applyCoupon(product.price, product.amount, product.coupon)
+            : 0;
 
         return {
             ...state,
-            cartItems: state.cartItems.map((cartItem) => {
-                if (cartItem.id === action.payload) {
-                    return { ...cartItem, isSelected: !cartItem.isSelected };
-                }
-                return { ...cartItem };
-            }),
+            cartItems: newCartItems,
             price:
                 state.price +
                 (product.isSelected
                     ? -(product.price * product.amount)
                     : product.price * product.amount),
+            discountPrice:
+                state.discountPrice +
+                (product.isSelected ? -newDiscountPrice : newDiscountPrice),
         };
     },
     [ADD_COUPON_AT_PRODUCT]: (state, action) => {
-        const product = state.cartItems.find(
-            (cartItem) => cartItem.id === action.payload.productId,
-        );
-        console.log(
-            applyCoupon(product.price, product.amount, action.payload.coupon),
-        );
+        const product = {
+            ...state.cartItems.find(
+                (cartItem) => cartItem.id === action.payload.productId,
+            ),
+            isSelected: true,
+            coupon: action.payload.coupon,
+        };
 
         return {
             ...state,
+            cartItems: state.cartItems.map((cartItem) => {
+                if (cartItem.id === action.payload.productId) {
+                    return {
+                        ...product,
+                    };
+                }
+                return { ...cartItem };
+            }),
+            price: state.price + product.price * product.amount,
             discountPrice:
                 state.discountPrice +
                 applyCoupon(
@@ -132,8 +168,18 @@ const cartReducer = createReducer<CartState, CartAction>(initialState, {
         const product = state.cartItems.find(
             (cartItem) => cartItem.id === action.payload.productId,
         );
+
         return {
             ...state,
+            cartItems: state.cartItems.map((cartItem) => {
+                if (cartItem.id === action.payload.productId) {
+                    return {
+                        ...product,
+                        coupon: null,
+                    };
+                }
+                return { ...cartItem };
+            }),
             discountPrice:
                 state.discountPrice -
                 applyCoupon(

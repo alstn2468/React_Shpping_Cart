@@ -234,6 +234,7 @@ function CartItem({
     availableCoupon = true,
     amount,
     isSelected = false,
+    coupon,
 }: ICartItem) {
     const item = {
         id,
@@ -244,6 +245,7 @@ function CartItem({
         availableCoupon,
         amount,
         isSelected,
+        coupon,
     };
     const dispatch = useDispatch();
 
@@ -310,11 +312,15 @@ function CartItem({
             <Divisor />
             <ConfirmationContainer>
                 <ApplyCouponButton
-                    disabled={!availableCoupon}
+                    disabled={!availableCoupon || Boolean(coupon)}
                     availableCoupon={availableCoupon}
                     onClick={() => dispatch(openCouponModalDialog(id))}
                 >
-                    {availableCoupon ? '쿠폰 적용하기' : '쿠폰 적용 불가'}
+                    {availableCoupon
+                        ? Boolean(coupon)
+                            ? coupon.title
+                            : '쿠폰 적용하기'
+                        : '쿠폰 적용 불가'}
                 </ApplyCouponButton>
                 <TotalPriceText>
                     총 {numberWithComma(price * amount)} 원

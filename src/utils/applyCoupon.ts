@@ -6,11 +6,10 @@ export function applyCoupon(
     coupon: ICouponItem,
 ) {
     const { type, discountRate, discountAmount } = coupon;
-    const basePrice: number = price * amount;
 
     if (type === 'rate') {
-        return Math.floor(basePrice / discountRate);
+        return Math.floor((price * amount) / discountRate);
     }
 
-    return discountAmount;
+    return discountAmount * amount;
 }

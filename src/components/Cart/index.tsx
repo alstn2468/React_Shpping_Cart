@@ -1,11 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { RootState } from 'reducers';
 import CartItem from 'components/Cart/CartItem';
 import CouponDialog from 'components/CouponDialog';
-import { getCouponList } from 'actions/thunkAction';
 import { ICartItem } from 'models/ICartItem';
 import { numberWithComma } from 'utils/numberWithComma';
 
@@ -89,14 +88,9 @@ const PurchaseButton = styled.button`
 `;
 
 function Cart() {
-    const dispatch = useDispatch();
     const { cartItems, price, discountPrice } = useSelector(
         (state: RootState) => state.cart,
     );
-
-    React.useEffect(() => {
-        dispatch(getCouponList());
-    }, []);
 
     return (
         <CartListContainer>

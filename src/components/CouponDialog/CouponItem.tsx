@@ -76,7 +76,6 @@ function CouponItem({
                         coupon,
                     }),
                 );
-                dispatch(selectProductAtCart(selectedProductId));
                 dispatch(removeCouponFromList(coupon));
                 dispatch(closeCouponModalDialog());
             }}
