@@ -56,7 +56,7 @@ const PurchaseContainer = styled.div`
 const PurchaseTextContainer = styled.div`
     display: flex;
     flex-direction: row;
-    font-size: 20px;
+    font-size: 18px;
     color: #000000;
     align-items: center;
     margin: 5px 0;

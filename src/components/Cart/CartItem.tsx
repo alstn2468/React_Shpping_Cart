@@ -17,7 +17,7 @@ import {
 const CartItemContainer = styled.div`
     position: relative;
     display: flex;
-    width: 33.333%;
+    width: calc(33.333333% - 40px);
     height: auto;
     justify-content: space-between;
     margin: 20px;
@@ -179,6 +179,7 @@ const TotalPriceText = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    font-size: 16px;
 `;
 
 function CartItem({
