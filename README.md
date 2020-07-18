@@ -1,7 +1,5 @@
 ### React Shopping Cart
 
-#### Soonchunhyang University<br/>
-
 #### Department of Computer Software Engineering
 
 ---
@@ -13,10 +11,26 @@
 ### To Do
 
 -   [x] Set up Typescript, React webpack config
--   [ ] Set up redux, redux-thunk config
--   [ ] Set up styled-components theme
--   [ ] Implementing product list components
--   [ ] Implementing shopping cart components
--   [ ] Implementing product list filtering capabilities
--   [ ] Redux asynchronous action processing
--   [ ] Connect to [Back-End servers](https://github.com/alstn2468/React_Shopping_Cart_Backend)
+-   [x] Set up redux, redux-thunk config
+-   [x] Set up styled-components
+-   [x] Implement product list page
+-   [x] Implement shopping cart page
+-   [x] Implement pagination component
+-   [x] Implement coupon dialong component
+-   [x] Sort product list by product score
+-   [x] Implement redux actions, reducers
+-   [x] Redux asynchronous action processing
+-   [ ] Component Splitting
+
+### 변경한 요구사항
+
+**쿠폰**
+
+-   Before
+
+등록한 하나의 쿠폰만 총 금액에서 계산되도록 설정
+
+-   After
+
+쿠폰 등록이 가능한 각각의 항목에 쿠폰을 등록할 수 있으나 1개의 수량에만 적용이되도록 설정<br/>
+이미 등록된 쿠폰은 쿠폰 목록 모달에 보이지 않으며 다른 상품에 등록할 수 없도록 설정
