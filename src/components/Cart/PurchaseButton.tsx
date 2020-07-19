@@ -1,0 +1,24 @@
+import * as React from 'react';
+import styled from 'styled-components';
+
+const Button = styled.button`
+    margin-top: 20px;
+    height: 50px;
+    width: 240px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 2px 0;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+function PurchaseButton({ onButtonClicked, children }): React.ReactElement {
+    return <Button onClick={onButtonClicked}>{children}</Button>;
+}
+
+export default PurchaseButton;

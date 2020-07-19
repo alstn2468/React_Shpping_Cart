@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { RootState } from 'reducers';
 import CartItem from 'components/Cart/CartItem';
+import Purchase from 'components/Cart/Purchase';
 import CouponDialog from 'components/CouponDialog';
 import { ICartItem } from 'models/ICartItem';
-import { numberWithComma } from 'utils/numberWithComma';
 
 const CartListContainer = styled.div`
     display: flex;
@@ -41,52 +41,6 @@ const CartEmptyIcon = styled(AiOutlineShopping)`
     margin: 10px 0;
 `;
 
-const PurchaseContainer = styled.div`
-    width: calc(100% - 40px);
-    border: 1px solid #c6c6c6;
-    color: #000000;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 30px 40px;
-`;
-
-const PurchaseTextContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    font-size: 18px;
-    color: #000000;
-    align-items: center;
-    margin: 5px 0;
-`;
-
-const PurchaseTextLabel = styled.div`
-    min-width: 100px;
-    text-align: right;
-`;
-
-const PurchaseText = styled.div`
-    margin-left: 10px;
-    min-width: 160px;
-    text-align: right;
-`;
-
-const PurchaseButton = styled.button`
-    margin-top: 20px;
-    height: 50px;
-    width: 240px;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 2px 0;
-    color: #ffffff;
-    background-color: #000000;
-    border: none;
-
-    &:focus {
-        outline: none;
-    }
-`;
-
 function Cart() {
     const { cartItems, price, discountPrice } = useSelector(
         (state: RootState) => state.cart,
@@ -101,37 +55,7 @@ function Cart() {
                             <CartItem key={item.id} {...item} />
                         ))}
                     </CartItemContainer>
-                    <PurchaseContainer>
-                        <PurchaseTextContainer>
-                            <PurchaseTextLabel>상품 금액</PurchaseTextLabel>
-                            <PurchaseText>
-                                {numberWithComma(price)}원
-                            </PurchaseText>
-                        </PurchaseTextContainer>
-                        <PurchaseTextContainer>
-                            <PurchaseTextLabel>할인 금액</PurchaseTextLabel>
-                            <PurchaseText>
-                                {numberWithComma(discountPrice)}원
-                            </PurchaseText>
-                        </PurchaseTextContainer>
-                        <PurchaseTextContainer>
-                            <PurchaseTextLabel>총 금액</PurchaseTextLabel>
-                            <PurchaseText>
-                                {numberWithComma(price - discountPrice)}원
-                            </PurchaseText>
-                        </PurchaseTextContainer>
-                        <PurchaseButton
-                            onClick={() =>
-                                alert(
-                                    `총 금액 ${numberWithComma(
-                                        price - discountPrice,
-                                    )} 원 구매 완료`,
-                                )
-                            }
-                        >
-                            구매하기
-                        </PurchaseButton>
-                    </PurchaseContainer>
+                    <Purchase price={price} discountPrice={discountPrice} />
                 </>
             ) : (
                 <CartEmptyContainer>
