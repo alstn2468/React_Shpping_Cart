@@ -1,17 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'reducers';
 import { changeProductListCurrentPage } from 'actions/productListAction';
+import PaginationButton from 'components/Pagination/PaginationButton';
+import { generatePaginationPatter } from 'utils/generatePaginationPattern';
 
 type PaginationProps = {
     currentPage: number;
     range: number;
-};
-
-type PaginationButtonProps = {
-    isActive: boolean;
-    isFirst: boolean;
-    isLast: boolean;
 };
 
 const PaginationContainer = styled.div`
@@ -23,103 +20,44 @@ const PaginationContainer = styled.div`
     margin-top: 20px;
 `;
 
-const PaginationButton = styled.button<PaginationButtonProps>`
-    height: 100%;
-    width: 40px;
-    margin: 0 5px;
-    color: ${(props) => (props.isActive ? '#ffffff' : '#000000')};
-    background-color: ${(props) =>
-        props.isActive ? 'rgba(0, 0, 0, 0.7)' : '#f2f2f2'};
-    visibility: ${(props) =>
-        props.isFirst || props.isLast ? 'hidden' : 'visible'};
-    border: none;
-    border-radius: 50%;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-
-    &:focus {
-        outline: none;
-    }
-`;
-
-function Pagination({
-    currentPage,
-    range,
-}: PaginationProps): React.ReactElement {
+function Pagination(): React.ReactElement {
     const dispatch = useDispatch();
-    let pattern = null;
-
-    switch (true) {
-        case range < 7:
-            pattern = [...new Array(range)].map((_, i) => i + 1);
-            break;
-        case currentPage < 4:
-            pattern = [1, 2, 3, 4, 5, '...', range];
-            break;
-        case currentPage > range - 4:
-            pattern = [
-                1,
-                '...',
-                range - 4,
-                range - 3,
-                range - 2,
-                range - 1,
-                range,
-            ];
-            break;
-        default:
-            pattern = [
-                1,
-                '...',
-                currentPage - 1,
-                currentPage,
-                currentPage + 1,
-                '...',
-                range,
-            ];
-    }
+    const { currentPage, itemCounts } = useSelector(
+        (state: RootState) => state.product,
+    );
+    const range = Math.ceil(itemCounts / 5);
+    const pattern = generatePaginationPatter(range, currentPage);
 
     return (
         range !== 0 && (
             <PaginationContainer>
                 <PaginationButton
-                    disabled={currentPage <= 1}
-                    onClick={() =>
+                    onButtonClicked={() =>
                         dispatch(changeProductListCurrentPage(currentPage - 1))
                     }
-                    isActive={false}
-                    isFirst={currentPage === 1}
-                    isLast={false}
-                >
-                    {'<'}
-                </PaginationButton>
+                    currentPage={currentPage}
+                    range={range}
+                    children="<"
+                />
                 {pattern.map((label: number | string) => (
                     <PaginationButton
-                        key={label}
-                        disabled={label === '...'}
-                        onClick={() =>
+                        onButtonClicked={() =>
                             typeof label === 'number' &&
                             dispatch(changeProductListCurrentPage(label))
                         }
-                        isActive={currentPage === label}
-                        isFirst={false}
-                        isLast={false}
-                    >
-                        {label}
-                    </PaginationButton>
+                        children={label}
+                        currentPage={currentPage}
+                        range={range}
+                    />
                 ))}
                 <PaginationButton
-                    disabled={currentPage >= range}
-                    onClick={() =>
+                    onButtonClicked={() =>
                         dispatch(changeProductListCurrentPage(currentPage + 1))
                     }
-                    isActive={false}
-                    isFirst={false}
-                    isLast={currentPage === range}
-                >
-                    {'>'}
-                </PaginationButton>
+                    currentPage={currentPage}
+                    range={range}
+                    children=">"
+                />
             </PaginationContainer>
         )
     );

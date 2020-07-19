@@ -50,10 +50,7 @@ function Product(): React.ReactElement {
                         {...item}
                     />
                 ))}
-                <Pagination
-                    currentPage={currentPage}
-                    range={Math.ceil(itemCounts / 5)}
-                />
+                <Pagination />
             </ProductListContainer>
             <Loading isLoading={loading} />
         </ProductContainer>
