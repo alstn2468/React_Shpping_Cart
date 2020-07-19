@@ -8,12 +8,10 @@ import {
     removeCouponFromProduct,
 } from 'actions/cartAction';
 import { openCouponModalDialog, addCouponToList } from 'actions/couponAction';
-import { numberWithComma } from 'utils/numberWithComma';
-import ProductAmount from 'components/Cart/ProductAmount';
-import CartCheckBox from 'components/Cart//CartCheckBox';
-import ApplyCouponButton from 'components/Cart/ApplyCouponButton';
-import RemoveCouponButton from 'components/Cart/RemoveCouponButton';
+import CartCheckBox from 'components/Cart/CartCheckBox';
+import CartItemDetail from 'components/Cart/CartItemDetail';
 import ProductRemoveButton from 'components/Cart/ProductRemoveButton';
+import ProductConfirm from 'components/Cart/ProductConfirm';
 import ProductBadge from 'components/Cart/ProductBadge';
 import Divisor from 'components/Common/Divisor';
 
@@ -42,43 +40,6 @@ const CartItemImage = styled.img`
     width: 100%;
     border-radius: 5px;
     margin: 8px 0;
-`;
-
-const CartItemDetail = styled.div``;
-
-const ProductTitle = styled.h2`
-    margin-top: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    height: 20px;
-`;
-
-const ProductPriceContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: rgb(27, 28, 29);
-    font-size: 13px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-`;
-
-const ProductPriceText = styled.div`
-    color: rgb(27, 28, 29);
-`;
-
-const ConfirmationContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const TotalPriceText = styled.div`
-    height: 40px;
-    width: calc(100% - 120px);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 16px;
 `;
 
 function CartItem({
@@ -129,40 +90,30 @@ function CartItem({
                 )}
             </CartItemTopContainer>
             <CartItemImage src={coverImage} />
-            <CartItemDetail>
-                <ProductTitle>{title}</ProductTitle>
-                <ProductPriceContainer>
-                    <ProductPriceText>
-                        {numberWithComma(price)}원
-                    </ProductPriceText>
-                    <ProductAmount amount={amount} productId={id} />
-                </ProductPriceContainer>
-            </CartItemDetail>
+            <CartItemDetail
+                title={title}
+                price={price}
+                amount={amount}
+                productId={id}
+            />
             <Divisor />
-            <ConfirmationContainer>
-                <ApplyCouponButton
-                    availableCoupon={availableCoupon}
-                    onButtonClicked={() => dispatch(openCouponModalDialog(id))}
-                    hasCoupon={Boolean(coupon)}
-                    couponTitle={Boolean(coupon) && coupon.title}
-                />
-                {availableCoupon && Boolean(coupon) && (
-                    <RemoveCouponButton
-                        onButtonClicked={() => {
-                            dispatch(
-                                removeCouponFromProduct({
-                                    productId: id,
-                                    coupon,
-                                }),
-                            );
-                            dispatch(addCouponToList(coupon));
-                        }}
-                    />
-                )}
-                <TotalPriceText>
-                    총 {numberWithComma(price * amount)} 원
-                </TotalPriceText>
-            </ConfirmationContainer>
+            <ProductConfirm
+                availableCoupon={availableCoupon}
+                onApplyCouponButtonClicked={() =>
+                    dispatch(openCouponModalDialog(id))
+                }
+                coupon={coupon}
+                onRemoveCouponButtonClicked={() => {
+                    dispatch(
+                        removeCouponFromProduct({
+                            productId: id,
+                            coupon,
+                        }),
+                    );
+                    dispatch(addCouponToList(coupon));
+                }}
+                totalPrice={price * amount}
+            />
         </CartItemContainer>
     );
 }
