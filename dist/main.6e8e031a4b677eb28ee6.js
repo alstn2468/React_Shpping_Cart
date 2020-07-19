@@ -57,7 +57,7 @@
     &:hover {
         transform: scale(1.1);
     }
-`;t.default=function(){return o.createElement(c,null,o.createElement(d,{autoPlay:!0,muted:!0,loop:!0},o.createElement("source",{src:a.default,type:"video/mp4"})),o.createElement(s,null,o.createElement(u,null,o.createElement(p,{src:r.default}),o.createElement(f,null,"준비물까지 챙겨주는 온라인 취미 클래스")),o.createElement(m,{to:"/products"},"지금 바로 시작하기")))}},,function(e,t,n){"use strict";n.r(t),t.default=n.p+"images/main-logo.png"},function(e,t,n){"use strict";n.r(t),t.default=n.p+"videos/main.mp4"},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const o=n(1),i=n(4),r=n(7),a=n(19),l=n(52),c=n(53),d=n(14),s=i.default.div`
+`;t.default=function(){return o.createElement(c,null,o.createElement(d,{autoPlay:!0,muted:!0,loop:!0,src:a.default}),o.createElement(s,null,o.createElement(u,null,o.createElement(p,{src:r.default}),o.createElement(f,null,"준비물까지 챙겨주는 온라인 취미 클래스")),o.createElement(m,{to:"/products"},"지금 바로 시작하기")))}},,function(e,t,n){"use strict";n.r(t),t.default=n.p+"images/main-logo.png"},function(e,t,n){"use strict";n.r(t),t.default=n.p+"videos/main.mp4"},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});const o=n(1),i=n(4),r=n(7),a=n(19),l=n(52),c=n(53),d=n(14),s=i.default.div`
     display: flex;
     width: 80%;
     height: 80%;
@@ -463,7 +463,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
