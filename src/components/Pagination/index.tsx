@@ -6,11 +6,6 @@ import { changeProductListCurrentPage } from 'actions/productListAction';
 import PaginationButton from 'components/Pagination/PaginationButton';
 import { generatePaginationPatter } from 'utils/generatePaginationPattern';
 
-type PaginationProps = {
-    currentPage: number;
-    range: number;
-};
-
 const PaginationContainer = styled.div`
     width: 100%;
     height: 40px;
