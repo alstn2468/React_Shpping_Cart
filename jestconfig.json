@@ -4,9 +4,13 @@
     },
     "testRegex": "\\.test\\.ts$",
     "moduleFileExtensions": ["ts", "js"],
+    "collectCoverage": true,
     "globals": {
         "ts-jest": {
             "diagnostics": true
         }
-    }
+    },
+    "modulePaths": [
+        "<rootDir>/src/"
+    ]
 }
