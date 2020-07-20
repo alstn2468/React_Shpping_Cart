@@ -1,4 +1,4 @@
-type PatternType = (string | number)[];
+export type PatternType = (string | number)[];
 
 export function generatePaginationPattern(
     range: number,
