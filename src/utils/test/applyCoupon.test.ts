@@ -22,6 +22,10 @@ describe('applyCoupon 유틸 함수 테스트', () => {
         expect(2000).toEqual(applyCoupon(10000, AmountCoupon));
     });
 
+    it('1000원 상품에 2000원 쿠폰 적용 테스트 -> (1000원 할인, 정수)', () => {
+        expect(1000).toEqual(applyCoupon(1000, AmountCoupon));
+    });
+
     it('7050원 상품에 5% 비율 쿠폰 적용 테스트 -> (352원 할인, 실수)', () => {
         expect(352).toEqual(applyCoupon(7050, RateCoupon));
     });
