@@ -36,6 +36,7 @@ function Pagination(): React.ReactElement {
                 />
                 {pattern.map((label: number | string) => (
                     <PaginationButton
+                        key={`pagination-${label}-button`}
                         onButtonClicked={() =>
                             typeof label === 'number' &&
                             dispatch(changeProductListCurrentPage(label))
