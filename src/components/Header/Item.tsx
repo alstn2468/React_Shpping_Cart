@@ -39,7 +39,7 @@ const SLink = styled(Link)`
 
 function Item({ pathname, linkTo, children }: ItemProp): React.ReactElement {
     return (
-        <LinkItem current={pathname === '/'}>
+        <LinkItem current={pathname === linkTo}>
             <SLink to={linkTo}>{children}</SLink>
         </LinkItem>
     );

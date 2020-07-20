@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSelector, shallowEqual } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { RootState } from 'reducers';
 import logoImage from 'assets/images/logo.png';
 import Item from 'components/Header/Item';
@@ -34,12 +34,10 @@ const LogoImage = styled.img`
     height: auto;
 `;
 
-function Header({
-    location: { pathname },
-}: RouteComponentProps): React.ReactElement {
-    const { cartItemCounts } = useSelector(
-        (state: RootState) => state.cart,
-        shallowEqual,
+function Header(): React.ReactElement {
+    const { pathname } = useLocation();
+    const cartItemCounts = useSelector(
+        (state: RootState): number => state.cart.cartItemCounts,
     );
 
     return (
@@ -64,4 +62,4 @@ function Header({
     );
 }
 
-export default withRouter(Header);
+export default Header;
