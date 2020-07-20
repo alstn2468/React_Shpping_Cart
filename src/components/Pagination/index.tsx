@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { changeProductListCurrentPage } from 'actions/productListAction';
 import PaginationButton from 'components/Pagination/PaginationButton';
-import { generatePaginationPatter } from 'utils/generatePaginationPattern';
+import { generatePaginationPattern } from 'utils/generatePaginationPattern';
 import { createSelector } from 'reselect';
 import { ProductListState } from 'reducers/productListReducer';
 
@@ -34,7 +34,7 @@ function Pagination(): React.ReactElement {
         ),
     );
     const range = Math.ceil(itemCounts / 5);
-    const pattern = generatePaginationPatter(range, currentPage);
+    const pattern = generatePaginationPattern(range, currentPage);
 
     return (
         range !== 0 && (
