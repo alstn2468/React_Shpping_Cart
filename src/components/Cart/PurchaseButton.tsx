@@ -4,9 +4,14 @@ import styled from 'styled-components';
 type PurchaseButtonProp = {
     onButtonClicked: () => void;
     children: string;
+    isActive: boolean;
 };
 
-const Button = styled.button`
+type ButtonProp = {
+    isActive: boolean;
+};
+
+const Button = styled.button<ButtonProp>`
     margin-top: 20px;
     height: 50px;
     width: 240px;
@@ -14,8 +19,9 @@ const Button = styled.button`
     font-weight: 600;
     padding: 2px 0;
     color: #ffffff;
-    background-color: #000000;
+    background-color: ${(prop) => (prop.isActive ? '#000000' : '#c2c2c2')};
     border: none;
+    cursor: ${(prop) => prop.isActive && 'pointer'};
 
     &:focus {
         outline: none;
@@ -25,8 +31,17 @@ const Button = styled.button`
 function PurchaseButton({
     onButtonClicked,
     children,
+    isActive,
 }: PurchaseButtonProp): React.ReactElement {
-    return <Button onClick={onButtonClicked}>{children}</Button>;
+    return (
+        <Button
+            disabled={!isActive}
+            isActive={isActive}
+            onClick={onButtonClicked}
+        >
+            {children}
+        </Button>
+    );
 }
 
 export default PurchaseButton;

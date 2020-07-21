@@ -63,6 +63,7 @@ function Purchase({ price, discountPrice }: PurchaseProp): React.ReactElement {
                         )} 원 구매 완료`,
                     )
                 }
+                isActive={price > 0}
                 children="구매하기"
             />
         </PurchaseContainer>
