@@ -1,5 +1,5 @@
 import { deprecated, ActionType } from 'typesafe-actions';
-import { ICartItem } from 'src/models/ICartItem';
+import { ICartItem } from 'models/ICartItem';
 import { ICouponItem } from 'models/ICouponItem';
 
 export const ADD_PRODUCT_TO_CART = 'ADD_PRODUCT_TO_CART';
