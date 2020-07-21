@@ -8,7 +8,6 @@ import {
     REMOVE_COUPON_FROM_LIST,
     ADD_COUPON_TO_LIST,
 } from 'actions/couponAction';
-import { ICartItem } from 'models/ICartItem';
 import { ICouponItem } from 'models/ICouponItem';
 
 describe('couponReducer 리듀서 테스트', () => {
